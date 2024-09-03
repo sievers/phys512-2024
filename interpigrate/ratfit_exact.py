@@ -1,5 +1,6 @@
 import numpy as np
 from matplotlib import pyplot as plt
+plt.ion()
 
 def rat_eval(p,q,x):
     top=0
@@ -37,6 +38,8 @@ pred=rat_eval(p,q,xx)
 plt.clf();plt.plot(x,y,'*')
 plt.plot(xx,y_true)
 plt.plot(xx,pred)
+plt.title('Rational Function Fit to Gaussian')
+plt.savefig('ratfit_gauss.png')
 
 fitp=np.polyfit(x,y,n+m-1)
 pred_poly=np.polyval(fitp,xx)
