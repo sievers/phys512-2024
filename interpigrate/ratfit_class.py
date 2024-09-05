@@ -25,21 +25,21 @@ def rat_eval(fitp,x,nump,nq):
 
 
 nump=3
-nq=5
+nq=7
 x=np.linspace(-1,1,nump+nq+1)
 y=np.exp(-0.5*x**2)
 fit=fit_rat(x,y,nump,nq)
-assert(1==0)
-xx=np.linspace(-15,15,1001)
+
+xx=np.linspace(-5,5,1001)
 yy=rat_eval(fit,xx,nump,nq)
+
 yy_true=np.exp(-0.5*xx**2)
 
-#pfit=np.polyfit(x,y,10)
-#yyp=np.polyval(pfit,xx)
-
+pfit=np.polyfit(x,y,nump+nq)
+yy_poly=np.polyval(pfit,xx)
 plt.clf()
 plt.plot(xx,yy)
 plt.plot(x,y,'.')
 plt.plot(xx,yy_true)
-#plt.plot(xx,yyp)
+plt.plot(xx,yy_poly)
 plt.show()
