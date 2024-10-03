@@ -67,7 +67,7 @@ plt.plot(x,y_true)
 plt.show()
 
 noise=0.5
-y=y_true+np.random.randn(len(y))*noise
+y=y_true+np.random.randn(len(y_true))*noise
 plt.plot(x,y,'.')
 Ninv=np.eye(len(y))/noise**2
 
@@ -91,6 +91,41 @@ for i in range(ntrial):
     chi_trial[i]=r@Ninv@r
 
 chain,chivec=run_chain(p_trial,gauss_chisq,y,x,dpars,Ninv,L)
-chain2,chivec2=run_chain(p_trial,gauss_chisq,y,x,dpars,Ninv,10*L)
-chain3,chivec3=run_chain(p_trial,gauss_chisq,y,x,dpars,Ninv,0.1*L)
+#chain2,chivec2=run_chain(p_trial,gauss_chisq,y,x,dpars,Ninv,10*L)
+#chain3,chivec3=run_chain(p_trial,gauss_chisq,y,x,dpars,Ninv,0.1*L)
 print('accept probability is ',1-np.mean(np.diff(chivec)==0))
+print('vanilla chain mean: ',np.mean(chain,axis=0))
+print('vanilla chain std: ',np.std(chain,axis=0))
+
+#let's say we put a prior on the amplitude to be p_true[0] +/- 0.01
+p0=ptrue[0]
+perr=0.01
+wt=np.exp(-0.5*(chain[:,0]-p0)**2/perr**2)
+npar=len(ptrue)
+for i in range(npar):
+    wt_mean=np.sum(chain[:,i]*wt)/np.sum(wt)
+    wt_sqr=np.sum(chain[:,i]**2*wt)/np.sum(wt)
+    #variance is <x^2>-<x>^2
+    psig=np.sqrt(wt_sqr-wt_mean**2)
+    print('new value and uncertainty for parameter ',i,' are ',wt_mean,psig)
+
+T=5
+chain_hot,chivec_hot=run_chain(p_trial,gauss_chisq,y,x,dpars,Ninv/T**2,L,nsamp=50000)
+delta_chi=chivec_hot-chivec_hot.min()
+wt=np.exp(-0.5*(T**2-1)*delta_chi)
+print('high-T mean: ',np.mean(chain_hot,axis=0))
+print('high-T errs: ',np.std(chain_hot,axis=0))
+for i in range(npar):
+    wt_mean=np.sum(chain_hot[:,i]*wt)/np.sum(wt)
+    wt_sqr=np.sum(chain_hot[:,i]**2*wt)/np.sum(wt)
+    #variance is <x^2>-<x>^2
+    psig=np.sqrt(wt_sqr-wt_mean**2)
+    print('new value and uncertainty for parameter ',i,' are ',wt_mean,psig)
+
+wt_sort=wt.copy()
+wt.sort()
+wt_cumsum=np.cumsum(wt)
+wt_cumsum=wt_cumsum/wt_cumsum[-1]
+
+#let's do 5-sigma errors for amplitude
+#mywt,myval=np.sortrows(np.hstack([chain_hot[:,0],wt]),0)
