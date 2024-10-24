@@ -17,10 +17,24 @@ arts=arts[i0:i0+cloud.shape[0],i1:i1+cloud.shape[1]]
 cloudft=np.fft.rfft2(cloud)
 artsft=np.fft.rfft2(arts)
 
-cloud_phase=np.abs(artsft)*np.exp(1j*np.angle(cloudft))
-arts_phase=np.abs(cloudft)*np.exp(1j*np.angle(artsft))
+cloud_amps=np.abs(cloudft)
+cloud_phase=np.angle(cloudft)
+arts_amps=np.abs(artsft)
+arts_phases=np.angle(artsft)
 
+cphases=np.exp(1J*cloud_phase)#*arts_amps
+aphases=cloud_amps*np.exp(1J*arts_phases)
 
-cc=np.fft.irfft2(cloud_phase)
-aa=np.fft.irfft2(arts_phase)
+cphase_image=np.fft.irfft2(cphases)
+aphase_image=np.fft.irfft2(aphases)
+plt.figure(1)
+plt.clf()
+plt.imshow(cphase_image,cmap='gray',vmin=-0.002,vmax=0.005)
+plt.title('cloudberry phase, arts amp')
+plt.figure(2)
+plt.clf()
+plt.imshow(aphase_image,cmap='gray')
+plt.title('arts phases, cloudberry amps')
+plt.show()
+
 
