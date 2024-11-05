@@ -59,8 +59,10 @@ hft=np.fft.rfft(hstrain)
 lft=np.fft.rfft(lstrain)
 
 
-vec=np.linspace(-np.pi,np.pi,len(hstrain))
+vec=np.linspace(-3*np.pi,3*np.pi,len(hstrain))
 window=0.5*(np.cos(vec)+1)
+window[np.abs(vec)<2*np.pi]=1
+
 hft_win=np.fft.rfft(hstrain*window)
 
 ttot=dt*len(hstrain)
@@ -81,7 +83,7 @@ plt.clf();plt.plot(mf);plt.show()
 
 tpft=np.fft.rfft(tp*window)
 txft=np.fft.rfft(tx*window)
-tft_filt=np.zeros([len(tpft),2])
+tft_filt=np.zeros([len(tpft),2],dtype='complex')
 tft_filt[:,0]=tpft/hps
 tft_filt[:,1]=txft/hps
 
