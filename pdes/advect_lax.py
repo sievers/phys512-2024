@@ -6,8 +6,8 @@ n=300
 x=np.zeros(n)
 x[n//3:(2*n//3)]=1.0
 
-beta=0.4
-alpha=0.5
+beta=1.0
+alpha=1.0
 k=10/n*2*np.pi
 #x=np.exp(1j*k*np.arange(n))
 x_org=x.copy()

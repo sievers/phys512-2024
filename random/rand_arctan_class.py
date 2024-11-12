@@ -18,8 +18,9 @@ nums=np.random.rand(n)
 #cdf is arctan, so inverse(cdf) is tangent
 
 y=(nums-1/2)*np.pi
-vec=np.exp(-0.5*np.tan(y)**2)/np.cos(y)**2
-accept=vec/(1.01*height.max())
+#vec=np.exp(-0.5*np.tan(y)**2)/np.cos(y)**2
+vec=np.exp(-np.abs(np.tan(y)))/np.cos(y)**2
+accept=vec/(1.2*height.max())
 #gdevs=np.tan(vec[np.random.rand(n)<accept]) #this was the line I had wrong 
 gdevs=np.tan(y[np.random.rand(n)<accept])    #this is the correct one, vec->y
 
@@ -30,3 +31,4 @@ bb=(bins[:-1]+bins[1:])/2
 plt.clf()
 plt.plot(bb,a/a.max())
 plt.plot(bb,np.exp(-0.5*bb**2))
+plt.plot(bb,np.exp(-np.abs(bb)))
