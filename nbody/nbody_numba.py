@@ -85,13 +85,14 @@ m=np.ones(n)/n
 
 
 
-lims=np.asarray([-1.5,1.5,-1.5,1.5])
-parts=Particles(x,v*0,m,soft=0.1)
-parts.plot(lims=lims*2,clear=True)
+lims=np.asarray([-1.5,1.5,-1.5,1.5])*3
+parts=Particles(x,v*0,m,soft=0.02)
+parts.plot(lims=lims,clear=True)
 dt=0.01
 oversamp=1
 for i in range(10000):
     for j in range(oversamp):
         parts.update(dt/oversamp)
     parts.plot(clear=True)
-    print(parts.x)
+    plt.axis(lims)
+    #print(parts.x)

@@ -1,4 +1,4 @@
-import numpy
+import numpy as np
 from matplotlib import pyplot as plt
 #let's start two partcles in what should be a circular orbit
 x0=0;y0=0;vx0=0;vy0=0.5
@@ -15,12 +15,12 @@ kinold=0
 
 step=0
 plt.clf()
-for t in numpy.arange(0,tmax,dt):    
+for t in np.arange(0,tmax,dt):    
     step+=1
     dx=x0-x1
     dy=y0-y1
     rsquare=dx*dx+dy*dy
-    r=numpy.sqrt(rsquare)
+    r=np.sqrt(rsquare)
     r3=r*r*r
     #calculate the x and y  force components
     fx0=dx/r3;
