@@ -64,7 +64,6 @@ def take_step_rk4(x,v,dt):
     k4=get_derivs(xx+k3*dt)
     
     tot=(k1+2*k2+2*k3+k4)/6
-    
 
     nn=x.shape[0]
     x=x+tot[:nn,:]*dt
@@ -94,8 +93,8 @@ plt.clf()
 for i in range(nstep):
     for j in range(nfine):
         #x,v=take_step_better(x,v,dt)
-        x,v=take_step_rk4(x,v,dt)
-        #x,v=take_step_simple(x,v,dt)
+        #x,v=take_step_rk4(x,v,dt)
+        x,v=take_step_simple(x,v,dt)
     f,pot=get_forces(x,do_pot=True,fail=True)
     kin=np.sum(v**2)/2
     all_pot[i]=pot

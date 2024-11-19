@@ -91,7 +91,7 @@ class Fluid:
                 dp[ii]-=fp[ii]
                 drhoE[ii-1]+=fE[ii]
                 drhoE[ii]-=fE[ii]
-        #Why is there a factor of 1/2 in the pressure gradient? Tutorial problem 2
+        #Why is there a factor of 1/2 in the pressure gradient? 
         gradP=0.5*(self.P[2:]-self.P[0:-2])
         dp[1:-1]-=gradP
         self.gradrho=drho
@@ -142,7 +142,7 @@ if __name__=='__main__':
     plt.axis([0,len(fluid.rho),0,2])
     plt.pause(0.01)
 
-    for i in range(0,1200):
+    for i in range(0,1600):
         fluid.take_step()
         #plt.clf()
         #plt.plot(fluid.rho)
