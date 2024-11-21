@@ -22,6 +22,7 @@ def inbounds(x,npix):
     x[:,0]=x[:,0]%npix
     x[:,1]=x[:,1]%npix
     return x
+
 @nb.njit(parallel=True)
 def get_forces(x,f,pot):
     ndata=x.shape[0]
@@ -64,7 +65,7 @@ def get_kernel(npix,soft=3,circ=True):
     if circ==False:
         kernel[npix//2:(3*npix//2),:]=0
         kernel[:,npix//2:(3*npix//2)]=0
-    kernel=kernel/kernel.sum()
+    kernel=kernel/kernel.sum() #normalize
     kft=np.fft.rfft2(kernel)
     return kft
 
@@ -83,7 +84,7 @@ n=5000000
         
 #x=np.zeros([n,2])
 npix=2000
-if True:
+if False:
     #x=np.random.randn(n,2)*(npix/10)+npix/2
     x=np.random.rand(n,2)*npix
     v=0.0*x

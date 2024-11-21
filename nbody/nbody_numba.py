@@ -12,14 +12,15 @@ def calc_acc_nb(a,x,m,soft):
     dx=np.zeros(ndim,dtype='float')
     for i in nb.prange(n):
         for j in range(n):
-            rsqr=soft**2
-            for k in range(ndim):
-                dx[k]=x[i,k]-x[j,k]
-                rsqr=rsqr+dx[k]**2
-            r=np.sqrt(rsqr)
-            r3=1/(r*rsqr)
-            for k in range(ndim):
-                a[i,k]=a[i,k]-m[j]*dx[k]*r3
+            if not(j==i):
+                rsqr=soft**2
+                for k in range(ndim):
+                    dx[k]=x[i,k]-x[j,k]
+                    rsqr=rsqr+dx[k]**2
+                r=np.sqrt(rsqr)
+                r3=1/(r*rsqr)
+                for k in range(ndim):
+                    a[i,k]=a[i,k]-m[j]*dx[k]*r3
 
 class Particles:
     def __init__(self,x,v,m=1.0,soft=0.01):
@@ -72,7 +73,7 @@ class Particles:
         
 
 
-n=10000
+n=100000
         
 #x=np.zeros([n,2])
 x=np.random.randn(n,2)
@@ -86,13 +87,18 @@ m=np.ones(n)/n
 
 
 lims=np.asarray([-1.5,1.5,-1.5,1.5])*3
-parts=Particles(x,v*0,m,soft=0.02)
-parts.plot(lims=lims,clear=True)
+parts=Particles(x,v*0,m,soft=0.01)
+#parts.plot(lims=lims,clear=True)
+parts.plot(clear=True)
 dt=0.01
 oversamp=1
+
 for i in range(10000):
     for j in range(oversamp):
         parts.update(dt/oversamp)
-    parts.plot(clear=True)
-    plt.axis(lims)
+    plt.clf()
+    plt.plot(parts.x[:,0],parts.x[:,1],'.')
+    plt.pause(0.001)
+    #parts.plot(clear=True)
+    #plt.axis(lims)
     #print(parts.x)
