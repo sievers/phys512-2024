@@ -51,6 +51,7 @@ V=0*bc
 
 r=b-Ax(V,mask)
 p=r.copy()
+
 for k in range(n):
     #Ap=(Ax(pad(p),mask))
     Ap=Ax(p,mask)
@@ -58,7 +59,7 @@ for k in range(n):
     rtr=np.sum(p*r)
     print('on iteration ' + repr(k) + ' residual is ' + repr(rtr))
     alpha=rtr/np.sum(Ap*p)
-
+    assert(1==0)
     V=V+alpha*p#pad(alpha*p)
     rnew=r-alpha*Ap
     beta=np.sum(rnew*rnew)/rtr
