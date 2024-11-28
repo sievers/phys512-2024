@@ -24,8 +24,6 @@ def sum_arr_cols(arr):
             tot=tot+arr[i,j]
     return tot
 
-
-
 n=10000
 
 mat=np.random.randn(n,n)
@@ -35,10 +33,11 @@ print('numpy sum is ',np.sum(mat))
 niter=100
 for i in range(niter):
     t1=time.time()
-    #tot=sum_arr_rows(mat)
-    tot=sum_arr_cols(mat)
-    t2=time.time()
-    tot=sum_arr_rows(mat)
+    #tot=sum_arr_cols(mat)
+    tot2=np.sum(np.sum(mat,axis=0))
+    t2=time.time()       
+    tot=np.sum(np.sum(mat,axis=1))
     t3=time.time()
     print('took ',t2-t1,' to sum columns, and ',t3-t2,' to sum rows')
     #, with answer ',tot)
+print('fractional error: ',(tot-tot2)/tot)

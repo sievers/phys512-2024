@@ -10,6 +10,14 @@ def project(ixy,grid):
         grid[ixy[i,0],ixy[i,1]]=grid[ixy[i,0],ixy[i,1]]+1
     
 
+@nb.njit
+def project_round(xy,grid):
+    n=xy.shape[0]
+    for i in range(n):
+        ix=int(xy[i][0]+0.5)
+        iy=int(xy[i][1]+0.5)
+        grid[ix,iy]=grid[ix,iy]+1
+        
 def hist_2d(xy,grid):
     ixy=np.asarray(np.round(xy),dtype='int')
     #n=xy.shape[0]
@@ -32,5 +40,14 @@ t2=time.time()
 hist_2d(xy,grid)
 t3=time.time()
 
-print('time per particle to project was ' + repr((t2-t1)/npt))
+print("call times: ",t2-t1,t3-t2)
+
+#print('time per particle to project was ' + repr((t2-t1)/npt))
 print('time per particle on run 2 was ',(t3-t2)/npt)
+project_round(xy,grid)
+grid2=0*grid
+t1=time.time()
+project_round(xy,grid2)
+t2=time.time()
+
+print('time per particle on project_round was ',(t2-t1)/npt)
