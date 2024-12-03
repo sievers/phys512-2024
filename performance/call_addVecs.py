@@ -5,10 +5,14 @@ import time
 from cupyx.profiler import benchmark
 
 mylib=ctypes.cdll.LoadLibrary("libaddVecs.so")
-add_cuda_c=mylib.add2
+add_cuda_c=mylib.add
 add_cuda_c.argtypes=[ctypes.c_void_p,ctypes.c_void_p,ctypes.c_void_p,ctypes.c_long]
 add_cuda_sizes=mylib.add3
 add_cuda_sizes.argtypes=[ctypes.c_void_p,ctypes.c_void_p,ctypes.c_void_p,ctypes.c_long,ctypes.c_long,ctypes.c_long]
+
+def add_cuda_simple(c,a,b):
+    n=len(a)
+    add_cuda_c(c.data.ptr,a.data.ptr,b.data.ptr,n)
 
 def add_cuda(c,a,b,nblock=64,bs=256):
     n=len(a)
@@ -18,10 +22,12 @@ def add_cuda(c,a,b,nblock=64,bs=256):
     #add_cuda_c(c.data.ptr,a.data.ptr,b.data.ptr,n)
 
 
-n=2048*2048*16
+#n=2048*2048*16
+n=2048
 a=cp.ones(n,dtype='float32')
 b=cp.ones(n,dtype='float32')
 c=cp.zeros(n,dtype='float32')
+add_cuda(c,a,b)
 print(c[0])
 t1=time.time()
 #add_cuda(c.data.ptr,a.data.ptr,b.data.ptr,n)
