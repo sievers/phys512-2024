@@ -29,14 +29,11 @@ void add_vecs_simple(float *out, float *in1, float *in2, long n)
 extern "C" {
 void add(float *out, float *in1,float *in2, long n)
 {  
-  long bs=256;
+  long bs=256;  //Set a block size for threads per block
   long nblock=n/bs;
   if ((nblock*bs)<n)
     nblock++;
-  //printf("adding vectors of length %ld with sizes %ld, %ld\n",n,bs,nblock);
-  //printf("addresses are %ld %ld %ld\n",(long)out,(long)in1,(long)in2);
-  //printf("err is currently %s\n",cudaGetErrorString(cudaGetLastError()));
-  add_vecs_simple<<<bs,nblock>>>(out,in1,in2,n);
+  add_vecs_simple<<<nblock,bs>>>(out,in1,in2,n);
   printf("err is currently %s\n",cudaGetErrorString(cudaGetLastError()));
 
   if (1==0) {
@@ -61,7 +58,7 @@ void add2(float *out, float *in1,float *in2, long n)
   long nblock_max=128;
   if (nblock>nblock_max)
     nblock=nblock_max;
-  add_vecs<<<bs,nblock>>>(out,in1,in2,n);
+  add_vecs<<<nblock,bs>>>(out,in1,in2,n);
   //printf("err is currently %s\n",cudaGetErrorString(cudaGetLastError()));
 
   if (1==0) {
