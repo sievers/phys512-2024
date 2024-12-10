@@ -20,7 +20,7 @@ def kernel_ctypes(x):
     apply_kernel_c(x.ctypes.data,y.ctypes.data,n,m)
     return y
 
-@nb.njit(parallel=True)
+@nb.njit(parallel=False)
 def kernel_numba(x):
     n=x.shape[0]
     m=x.shape[1]

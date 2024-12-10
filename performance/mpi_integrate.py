@@ -30,7 +30,7 @@ mytot=(y[0]+y[-1]+4*np.sum(y[1:-1:2])+2*np.sum(y[2:-1:2]))*dx/3
 #to avoid making a mess, we can just send the pieces of the integral to one process
 
 tot=comm.reduce(mytot)
-print('on rank ',rank,' tot is ',tot)
+#print('on rank ',rank,' tot is ',tot)
 comm.Barrier()
 
 if rank==0:
