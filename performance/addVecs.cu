@@ -22,7 +22,8 @@ void add_vecs_simple(float *out, float *in1, float *in2, long n)
   /* Simple way to add vectors where each element gets one thread.  works great
      for small arrays.*/
   long idx=threadIdx.x+blockDim.x*blockIdx.x;
-  out[idx]=in1[idx]+in2[idx];
+  if (idx<n)
+    out[idx]=in1[idx]+in2[idx];
 }
 
 /*--------------------------------------------------------------------------------*/
